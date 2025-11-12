@@ -79,6 +79,48 @@ if (!isset($_SESSION['username'])) {
         .logout-btn:hover {
             background-color: #2e59d9;
         }
+
+        /* Tabel penjualan */
+        .content {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 65%;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border-right: 3px solid #4682B4; /* Garis pemisah antar kolom */
+        }
+        th:last-child, td:last-child {
+            border-right: none; /* Hilangkan garis di kolom terakhir */
+        }
+        th {
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-size: 18px;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 3px solid #4682B4;
+            color: #032B44;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #F0F8FF;
+        }
+        tr:nth-child(odd) {
+            background-color: #E6F3FF;
+        }
     </style>
 </head>
 <body>
@@ -96,6 +138,35 @@ if (!isset($_SESSION['username'])) {
         <p>Role: <?php echo $_SESSION['role']; ?></p>
         <a class="logout-btn" href="logout.php">Logout</a>
     </div>
+</div>
+
+<div class="content">
+    <?php
+    $barang = array(
+        array("KA001", "Kemeja", 50000),
+        array("KA002", "Rok", 35000),
+        array("KA003", "Jilbab", 25000),
+        array("KA004", "Sepatu", 35000),
+        array("KA005", "Jeket", 150000)
+    );
+
+    echo "<table>";
+    echo "<tr>
+            <th>Kode Barang</th>
+            <th>Nama Barang</th>
+            <th>Harga Barang</th>
+          </tr>";
+
+    foreach ($barang as $item) {
+        echo "<tr>
+                <td>{$item[0]}</td>
+                <td>" . strtoupper($item[1]) . "</td>
+                <td>Rp " . number_format($item[2], 0, ',', '.') . "</td>
+              </tr>";
+    }
+
+    echo "</table>";
+    ?>
 </div>
 
 </body>
