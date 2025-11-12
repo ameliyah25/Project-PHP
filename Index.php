@@ -1,3 +1,30 @@
+<?php
+session_start();
+
+// Jika user sudah login, arahkan ke dashboard
+if (isset($_SESSION['username'])) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+$error = '';  // definisikan error
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $_username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $_password = isset($_POST['password']) ? trim($_POST['password']) : '';
+
+    // Login sederhana: username = admin, password = 123
+    if ($_username === 'admin' && $_password === '123') {
+        $_SESSION['username'] = $_username;
+        $_SESSION['role'] = 'Mahasiswa';
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error = "Username atau password salah!";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,20 +106,33 @@
         font-size: 12px;
         color: #888;
     }
+    .error-alert {
+        background-color: #ffefef;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+        padding: 10px 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        text-align: left;
+        font-size: 0.9rem;
+    }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="login-container">
         <h2>POLGAN MART</h2>
-        <form method="post">
+        <?php if ($error): ?>
+            <div class="error-alert"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        <form method="post" action="">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" type="text" placeholder="" required>
+                <input id="username" name="username" type="text" placeholder="" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="" required>
+                <input id="password" name="password" type="password" placeholder="" required>
             </div>
             <button type="submit" class="btn btn-login">Login</button>
             <button type="reset" class="btn btn-batal">Batal</button>
