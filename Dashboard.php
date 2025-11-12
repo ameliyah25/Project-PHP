@@ -191,7 +191,9 @@ if (!isset($_SESSION['username'])) {
         $acak = rand(0, count($barang) - 1);
         $beli[$i]   = $barang[$acak];
         $jumlah[$i] = rand(1, 5);
+        // hitung total harga per item
         $total[$i]  = $beli[$i][2] * $jumlah[$i];
+        // akumulasikan ke grandtotal
         $grandtotal += $total[$i];
     }
 
@@ -204,13 +206,13 @@ if (!isset($_SESSION['username'])) {
             <th>Jumlah</th>
             <th>Total</th>
           </tr>";
-    for ($i = 0; $i < count($beli); $i++) {
+    foreach ($beli as $index => $item) {
         echo "<tr>
-                <td>{$beli[$i][0]}</td>
-                <td>" . strtoupper($beli[$i][1]) . "</td>
-                <td>Rp " . number_format($beli[$i][2], 0, ',', '.') . "</td>
-                <td>{$jumlah[$i]}</td>
-                <td>Rp " . number_format($total[$i], 0, ',', '.') . "</td>
+                <td>{$item[0]}</td>
+                <td>" . strtoupper($item[1]) . "</td>
+                <td>Rp " . number_format($item[2], 0, ',', '.') . "</td>
+                <td>{$jumlah[$index]}</td>
+                <td>Rp " . number_format($total[$index], 0, ',', '.') . "</td>
               </tr>";
     }
     echo "<tr style='background:#d0e7ff; font-weight:bold;'>
