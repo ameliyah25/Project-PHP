@@ -84,7 +84,8 @@ if (!isset($_SESSION['username'])) {
         .content {
             margin-top: 40px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
         table {
             border-collapse: collapse;
@@ -94,12 +95,13 @@ if (!isset($_SESSION['username'])) {
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             font-family: Arial, sans-serif;
+            margin-bottom: 40px;
         }
         th, td {
-            border-right: 3px solid #4682B4; /* Garis pemisah antar kolom */
+            border-right: 3px solid #4682B4;
         }
         th:last-child, td:last-child {
-            border-right: none; /* Hilangkan garis di kolom terakhir */
+            border-right: none;
         }
         th {
             background: linear-gradient(135deg, #87CEEB, #4682B4);
@@ -120,6 +122,15 @@ if (!isset($_SESSION['username'])) {
         }
         tr:nth-child(odd) {
             background-color: #E6F3FF;
+        }
+
+        /* Garis pemisah antara tabel 1 dan tabel 2 */
+        .separator {
+            width: 65%;
+            height: 4px;
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            border-radius: 2px;
+            margin: 0 0 40px 0;
         }
     </style>
 </head>
@@ -143,20 +154,20 @@ if (!isset($_SESSION['username'])) {
 <div class="content">
     <?php
     $barang = array(
-        array("KA001", "Kemeja", 50000),
-        array("KA002", "Rok", 35000),
-        array("KA003", "Jilbab", 25000),
-        array("KA004", "Sepatu", 35000),
-        array("KA005", "Jeket", 150000)
+        array("KA001", "Jilbab", 50000),
+        array("KA002", "Gamis", 250000),
+        array("KA003", "Jeket", 100000),
+        array("KA004", "Rok", 75000),
+        array("KA005", "Sepatu", 150000)
     );
 
+    // Tabel daftar barang
     echo "<table>";
     echo "<tr>
             <th>Kode Barang</th>
             <th>Nama Barang</th>
             <th>Harga Barang</th>
           </tr>";
-
     foreach ($barang as $item) {
         echo "<tr>
                 <td>{$item[0]}</td>
@@ -164,7 +175,48 @@ if (!isset($_SESSION['username'])) {
                 <td>Rp " . number_format($item[2], 0, ',', '.') . "</td>
               </tr>";
     }
+    echo "</table>";
 
+    // Garis pemisah antara tabel
+    echo "<div class='separator'></div>";
+
+    // Tambahan array dan logika acak
+    $beli       = array();
+    $jumlah     = array();
+    $total      = array();
+    $grandtotal = 0;
+
+    // Pilih 5 barang acak
+    for ($i = 0; $i < 5; $i++) {
+        $acak = rand(0, count($barang) - 1);
+        $beli[$i]   = $barang[$acak];
+        $jumlah[$i] = rand(1, 5);
+        $total[$i]  = $beli[$i][2] * $jumlah[$i];
+        $grandtotal += $total[$i];
+    }
+
+    // Tabel pembelian acak
+    echo "<table>";
+    echo "<tr>
+            <th>Kode Barang</th>
+            <th>Nama Barang</th>
+            <th>Harga</th>
+            <th>Jumlah</th>
+            <th>Total</th>
+          </tr>";
+    for ($i = 0; $i < count($beli); $i++) {
+        echo "<tr>
+                <td>{$beli[$i][0]}</td>
+                <td>" . strtoupper($beli[$i][1]) . "</td>
+                <td>Rp " . number_format($beli[$i][2], 0, ',', '.') . "</td>
+                <td>{$jumlah[$i]}</td>
+                <td>Rp " . number_format($total[$i], 0, ',', '.') . "</td>
+              </tr>";
+    }
+    echo "<tr style='background:#d0e7ff; font-weight:bold;'>
+            <td colspan='4' style='text-align:right;'>GRAND TOTAL</td>
+            <td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>
+          </tr>";
     echo "</table>";
     ?>
 </div>
