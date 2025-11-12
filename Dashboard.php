@@ -80,7 +80,7 @@ if (!isset($_SESSION['username'])) {
             background-color: #2e59d9;
         }
 
-        /* Tabel penjualan */
+        /* Tabel faktur */
         .content {
             margin-top: 40px;
             display: flex;
@@ -123,14 +123,23 @@ if (!isset($_SESSION['username'])) {
         tr:nth-child(odd) {
             background-color: #E6F3FF;
         }
-
-        /* Garis pemisah antara tabel 1 dan tabel 2 */
         .separator {
             width: 65%;
             height: 4px;
             background: linear-gradient(135deg, #87CEEB, #4682B4);
             border-radius: 2px;
             margin: 0 0 40px 0;
+        }
+        .thankyou-text {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 18px;
+            color: #2e59d9;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            transition: color 0.3s ease;
+        }
+        .thankyou-text:hover {
+            color: #4682B4;
         }
     </style>
 </head>
@@ -140,7 +149,7 @@ if (!isset($_SESSION['username'])) {
     <div class="logo-section">
         <div class="logo">PM</div>
         <div class="logo-text">
-            <h2>--POLGAN MART--</h2>
+            <h2>---POLGAN MART---</h2>
             <p>Sistem Penjualan Sederhana</p>
         </div>
     </div>
@@ -161,25 +170,6 @@ if (!isset($_SESSION['username'])) {
         array("KA005", "Sepatu", 150000)
     );
 
-    // Tabel daftar barang
-    echo "<table>";
-    echo "<tr>
-            <th>Kode Barang</th>
-            <th>Nama Barang</th>
-            <th>Harga Barang</th>
-          </tr>";
-    foreach ($barang as $item) {
-        echo "<tr>
-                <td>{$item[0]}</td>
-                <td>" . strtoupper($item[1]) . "</td>
-                <td>Rp " . number_format($item[2], 0, ',', '.') . "</td>
-              </tr>";
-    }
-    echo "</table>";
-
-    // Garis pemisah antara tabel
-    echo "<div class='separator'></div>";
-
     // Tambahan array dan logika acak
     $beli       = array();
     $jumlah     = array();
@@ -191,70 +181,58 @@ if (!isset($_SESSION['username'])) {
         $acak = rand(0, count($barang) - 1);
         $beli[$i]   = $barang[$acak];
         $jumlah[$i] = rand(1, 5);
-        // hitung total harga per item
         $total[$i]  = $beli[$i][2] * $jumlah[$i];
-        // akumulasikan ke grandtotal
         $grandtotal += $total[$i];
     }
 
-    // Tabel pembelian acak
-    echo "<table>";
-    echo "<tr>
-            <th>Kode Barang</th>
-            <th>Nama Barang</th>
-            <th>Harga</th>
-            <th>Jumlah</th>
-            <th>Total</th>
-          </tr>";
-    foreach ($beli as $index => $item) {
-        echo "<tr>
-                <td>{$item[0]}</td>
-                <td>" . strtoupper($item[1]) . "</td>
-                <td>Rp " . number_format($item[2], 0, ',', '.') . "</td>
-                <td>{$jumlah[$index]}</td>
-                <td>Rp " . number_format($total[$index], 0, ',', '.') . "</td>
-              </tr>";
+    // DISKON sesuai ketentuan
+    $diskon_percent = 0;
+    if ($grandtotal < 50000) {
+        $diskon_percent = 5;
+    } elseif ($grandtotal <= 100000) {
+        $diskon_percent = 10;
+    } else {
+        $diskon_percent = 15;
     }
-    echo "<tr style='background:#d0e7ff; font-weight:bold;'>
-            <td colspan='4' style='text-align:right;'>GRAND TOTAL</td>
-            <td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>
-          </tr>";
-    echo "</table>";
+    $diskon_amount = ($diskon_percent / 100) * $grandtotal;
+    $total_bayar = $grandtotal - $diskon_amount;
 
-     // Garis pemisah antara tabel
-    echo "<div class='separator'></div>";
-
-    // Fakur / Struk Total Belanja
+    // Tabel faktur / struk
     echo "<div style='width:65%; background:white; border:3px solid #4682B4; border-radius:10px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin-bottom:40px;'>";
-    echo "<h3 style='text-align:center; color:#4682B4;'>FAKTUR BELANJA</h3>";
-    echo "<p style='text-align:center;'>No. Faktur: PM" . date('YmdHis') . "<br>";
-    echo "Tanggal: ". date('d/m/Y') ." | Waktu: ". date('H:i:s') ."</p>";
     echo "<table style='width:100%; border-collapse: collapse; margin-top:20px;'>";
     echo "<tr style='background:#87CEEB; color:white;'>
-            <th style='text-align:left; padding:8px;'>No</th>
-            <th style='text-align:left; padding:8px;'>Kode Barang</th>
-            <th style='text-align:left; padding:8px;'>Nama Barang</th>
-            <th style='text-align:right; padding:8px;'>Jumlah</th>
-            <th style='text-align:right; padding:8px;'>Subtotal</th>
+            <th style='text-align:center; padding:8px;'>No</th>
+            <th style='text-align:center; padding:8px;'>Kode Barang</th>
+            <th style='text-align:center; padding:8px;'>Nama Barang</th>
+            <th style='text-align:center; padding:8px;'>Jumlah</th>
+            <th style='text-align:center; padding:8px;'>Subtotal</th>
           </tr>";
 
-   foreach ($beli as $index => $item) {
-    $no = $index + 1;
-    echo "<tr>
-            <td style='padding:8px;'>".$no."</td>
-            <td style='padding:8px;'>{$item[0]}</td>
-            <td style='padding:8px;'>". strtoupper($item[1]) ."</td>
-            <td style='padding:8px; text-align:right;'>{$jumlah[$index]} pcs</td>
-            <td style='padding:8px; text-align:right;'>Rp ". number_format($total[$index],0,',','.') ."</td>
-          </tr>";
-}
+    foreach ($beli as $index => $item) {
+        $no = $index + 1;
+        echo "<tr>
+                <td style='padding:8px; text-align:center;'>".$no."</td>
+                <td style='padding:8px; text-align:center;'>{$item[0]}</td>
+                <td style='padding:8px; text-align:center;'>". strtoupper($item[1]) ."</td>
+                <td style='padding:8px; text-align:center;'>{$jumlah[$index]} pcs</td>
+                <td style='padding:8px; text-align:center;'>Rp ". number_format($total[$index],0,',','.') ."</td>
+              </tr>";
+    }
 
     echo "<tr style='background:#C6EFFE; font-weight:bold;'>
+            <td colspan='4' style='padding:8px; text-align:right;'>Total Belanja:</td>
+            <td style='padding:8px; text-align:center;'>Rp ". number_format($grandtotal,0,',','.') ."</td>
+          </tr>";
+    echo "<tr style='background:#C6EFFE; font-weight:bold;'>
+            <td colspan='4' style='padding:8px; text-align:right;'>DISKON (".$diskon_percent."%):</td>
+            <td style='padding:8px; text-align:center;'>Rp ". number_format($diskon_amount,0,',','.') ."</td>
+          </tr>";
+    echo "<tr style='background:#87CEEB; color:white; font-weight:bold;'>
             <td colspan='4' style='padding:8px; text-align:right;'>TOTAL BAYAR:</td>
-            <td style='padding:8px; text-align:right;'>Rp " . number_format($grandtotal,0,',','.') . "</td>
+            <td style='padding:8px; text-align:center;'>Rp ". number_format($total_bayar,0,',','.') ."</td>
           </tr>";
     echo "</table>";
-    echo "<p style='text-align:center; margin-top:20px;'>Terima Kasih telah berbelanja di POLGAN MART!</p>";
+    echo "<p class='thankyou-text' style='text-align:center; margin-top:20px;'>Terima Kasih telah berbelanja di POLGAN MART!</p>";
     echo "</div>";
     ?>
 </div>

@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="login-container">
-        <h2>POLGAN MART</h2>
+        <h2>---POLGAN MART---</h2>
         <?php if ($error): ?>
             <div class="error-alert"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
