@@ -220,6 +220,42 @@ if (!isset($_SESSION['username'])) {
             <td>Rp " . number_format($grandtotal, 0, ',', '.') . "</td>
           </tr>";
     echo "</table>";
+
+     // Garis pemisah antara tabel
+    echo "<div class='separator'></div>";
+
+    // Fakur / Struk Total Belanja
+    echo "<div style='width:65%; background:white; border:3px solid #4682B4; border-radius:10px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin-bottom:40px;'>";
+    echo "<h3 style='text-align:center; color:#4682B4;'>FAKTUR BELANJA</h3>";
+    echo "<p style='text-align:center;'>No. Faktur: PM" . date('YmdHis') . "<br>";
+    echo "Tanggal: ". date('d/m/Y') ." | Waktu: ". date('H:i:s') ."</p>";
+    echo "<table style='width:100%; border-collapse: collapse; margin-top:20px;'>";
+    echo "<tr style='background:#87CEEB; color:white;'>
+            <th style='text-align:left; padding:8px;'>No</th>
+            <th style='text-align:left; padding:8px;'>Kode Barang</th>
+            <th style='text-align:left; padding:8px;'>Nama Barang</th>
+            <th style='text-align:right; padding:8px;'>Jumlah</th>
+            <th style='text-align:right; padding:8px;'>Subtotal</th>
+          </tr>";
+
+   foreach ($beli as $index => $item) {
+    $no = $index + 1;
+    echo "<tr>
+            <td style='padding:8px;'>".$no."</td>
+            <td style='padding:8px;'>{$item[0]}</td>
+            <td style='padding:8px;'>". strtoupper($item[1]) ."</td>
+            <td style='padding:8px; text-align:right;'>{$jumlah[$index]} pcs</td>
+            <td style='padding:8px; text-align:right;'>Rp ". number_format($total[$index],0,',','.') ."</td>
+          </tr>";
+}
+
+    echo "<tr style='background:#C6EFFE; font-weight:bold;'>
+            <td colspan='4' style='padding:8px; text-align:right;'>TOTAL BAYAR:</td>
+            <td style='padding:8px; text-align:right;'>Rp " . number_format($grandtotal,0,',','.') . "</td>
+          </tr>";
+    echo "</table>";
+    echo "<p style='text-align:center; margin-top:20px;'>Terima Kasih telah berbelanja di POLGAN MART!</p>";
+    echo "</div>";
     ?>
 </div>
 
