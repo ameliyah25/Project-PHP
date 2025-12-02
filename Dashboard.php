@@ -1,241 +1,195 @@
-<?php
-session_start();
-
-// Cek apakah user sudah login
-if (!isset($_SESSION['username'])) {
-    header("Location: Index.php");
-    exit;
-}
-?>
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <title>POLGAN MART — Sistem Penjualan Sederhana</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f6f7fb;
+            background: #f3f5fa;
         }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f8f9fc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 10px 30px;
-        }
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
-        .logo {
-            background-color: #4e73df;
-            color: white;
-            font-weight: bold;
-            border-radius: 8px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-size: 16px;
-        }
-        .logo-text h2 {
-            margin: 0;
-            color: #2e59d9;
-            font-size: 18px;
-        }
-        .logo-text p {
-            margin: 0;
-            font-size: 12px;
-            color: #858796;
-        }
-        .user-info {
-            text-align: right;
-        }
-        .user-info h3 {
-            margin: 0;
-            font-size: 16px;
-            color: #2e2e2e;
-        }
-        .user-info p {
-            margin: 2px 0;
-            font-size: 13px;
-            color: #858796;
-        }
-        .logout-btn {
-            display: inline-block;
-            margin-top: 5px;
-            background-color: #4e73df;
-            color: white;
-            padding: 6px 14px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 13px;
-            transition: background-color 0.3s;
-        }
-        .logout-btn:hover {
-            background-color: #2e59d9;
-        }
-
-        /* Tabel faktur */
-        .content {
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        table {
-            border-collapse: collapse;
-            width: 65%;
+        .card-custom {
             background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            font-family: Arial, sans-serif;
-            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px blue;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 22px;
+            color: blue;
+        }
+        .brand-sub {
+            font-size: 13px;
+            color: black;
         }
         th, td {
-            border-right: 3px solid #4682B4;
-        }
-        th:last-child, td:last-child {
-            border-right: none;
-        }
-        th {
-            background: linear-gradient(135deg, #87CEEB, #4682B4);
-            color: white;
-            padding: 12px;
-            text-align: center;
-            font-size: 18px;
-        }
-        td {
-            padding: 12px 15px;
-            border-bottom: 3px solid #4682B4;
-            color: #032B44;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        tr:nth-child(even) {
-            background-color: #F0F8FF;
-        }
-        tr:nth-child(odd) {
-            background-color: #E6F3FF;
-        }
-        .separator {
-            width: 65%;
-            height: 4px;
-            background: linear-gradient(135deg, #87CEEB, #4682B4);
-            border-radius: 2px;
-            margin: 0 0 40px 0;
-        }
-        .thankyou-text {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 18px;
-            color: #2e59d9;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-            transition: color 0.3s ease;
-        }
-        .thankyou-text:hover {
-            color: #4682B4;
+            vertical-align: middle;
         }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo-section">
-        <div class="logo">PM</div>
-        <div class="logo-text">
-            <h2>---POLGAN MART---</h2>
-            <p>Sistem Penjualan Sederhana</p>
+<!-- HEADER (navbar diperbaiki) -->
+<nav class="navbar bg-white px-4 shadow-sm d-flex align-items-center">
+    <div class="d-flex align-items-center">
+        <div class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center"
+             style="width:45px; height:45px; font-weight:bold;">
+            PM
+        </div>
+
+        <div class="ms-3">
+            <div class="navbar-brand">--POLGAN MART--</div>
+            <div class="brand-sub">Sistem Penjualan Sederhana</div>
         </div>
     </div>
-    <div class="user-info">
-        <h3>Selamat datang, <?php echo $_SESSION['username']; ?>!</h3>
-        <p>Role: <?php echo $_SESSION['role']; ?></p>
-        <a class="logout-btn" href="logout.php">Logout</a>
+
+    <div class="ms-auto text-end">
+        <div class="fw-bold">Selamat datang, admin!</div>
+        <div style="font-size: 13px; color: gray;">Role: Mahasiswa</div>
+      <a href="logout.php" class="btn btn-primary btn-sm mt-1">Logout</a>
+    </div>
+</nav>
+
+<div class="container py-5">
+    <div class="card-custom">
+        <!-- FORM INPUT -->
+        <div class="row mb-4">
+
+            <!-- KODE BARANG (SELECT OTOMATIS) -->
+            <div class="col-md-12">
+                <label class="fw-bold">Kode Barang</label>
+                <select id="kode" class="form-control">
+                    <option value="">Pilih Kode Barang</option>
+                    <option value="KA001" data-nama="Kemeja" data-harga="50000">KA001 - Kemeja</option>
+                    <option value="KA002" data-nama="Rok" data-harga="80000">KA002 - Rok</option>
+                    <option value="KA003" data-nama="Jilbab" data-harga="35000">KA003 - Jilbab</option>
+                    <option value="KA004" data-nama="Sepatu" data-harga="150000">KA004 - Sepatu</option>
+                    <option value="KA005" data-nama="Jeket" data-harga="85000">KA005 - Jeket</option>
+                </select>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <label class="fw-bold">Nama Barang</label>
+                <input type="text" id="nama" class="form-control" placeholder="Masukkan Nama Barang" readonly>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <label class="fw-bold">Harga</label>
+                <input type="number" id="harga" class="form-control" placeholder="Masukkan Harga" readonly>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <label class="fw-bold">Jumlah</label>
+                <input type="number" id="jumlah" class="form-control" placeholder="Masukkan Jumlah">
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <button class="btn btn-primary" onclick="tambah()">Tambahkan</button>
+                <button type="button" class="btn btn-light ms-2" onclick="clearInputs()">Batal</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- DAFTAR PEMBELIAN -->
+        <h5 class="text-center fw-bold mt-4 mb-3">Daftar Pembelian</h5>
+
+        <table class="table table-bordered text-center" id="tabel">
+            <thead class="table-light">
+            <tr>
+                <th>Kode</th>
+                <th>Nama Barang</th>
+                <th>Harga</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+
+        <!-- RINGKASAN TOTAL -->
+        <div class="text-end mt-4">
+            <div>Total Belanja : <strong id="total-belanja">Rp 0</strong></div>
+            <div>Diskon : <strong id="diskon">Rp 0 (5%)</strong></div>
+            <div class="fs-5 mt-1">Total Bayar : <strong id="total-bayar">Rp 0</strong></div>
+        </div>
+
+        <button class="btn btn-outline-danger mt-4" onclick="kosongkan()">Kosongkan Keranjang</button>
     </div>
 </div>
 
-<div class="content">
-    <?php
-    $barang = array(
-        array("KA001", "Jilbab", 50000),
-        array("KA002", "Gamis", 250000),
-        array("KA003", "Jeket", 100000),
-        array("KA004", "Rok", 75000),
-        array("KA005", "Sepatu", 150000)
-    );
+<script>
+    let keranjang = [];
 
-    // Tambahan array dan logika acak
-    $beli       = array();
-    $jumlah     = array();
-    $total      = array();
-    $grandtotal = 0;
-
-    // Pilih 5 barang acak
-    for ($i = 0; $i < 5; $i++) {
-        $acak = rand(0, count($barang) - 1);
-        $beli[$i]   = $barang[$acak];
-        $jumlah[$i] = rand(1, 5);
-        $total[$i]  = $beli[$i][2] * $jumlah[$i];
-        $grandtotal += $total[$i];
+    function formatRupiah(num) {
+        return "Rp " + num.toLocaleString("id-ID");
     }
 
-    // DISKON sesuai ketentuan
-    $diskon_percent = 0;
-    if ($grandtotal < 50000) {
-        $diskon_percent = 5;
-    } elseif ($grandtotal <= 100000) {
-        $diskon_percent = 10;
-    } else {
-        $diskon_percent = 15;
+    /* ------------------------------
+        AUTO FILL NAMA & HARGA
+    ------------------------------ */
+    document.getElementById("kode").addEventListener("change", function () {
+        let selected = this.options[this.selectedIndex];
+        let nama = selected.getAttribute("data-nama");
+        let harga = selected.getAttribute("data-harga");
+        document.getElementById("nama").value = nama || "";
+        document.getElementById("harga").value = harga || "";
+    });
+
+    function render() {
+        const tbody = document.getElementById("tbody");
+        tbody.innerHTML = "";
+        let totalBelanja = 0;
+        keranjang.forEach(item => {
+            let total = item.harga * item.jumlah;
+            totalBelanja += total;
+            tbody.innerHTML += `
+                <tr>
+                    <td>${item.kode}</td>
+                    <td>${item.nama}</td>
+                    <td>${formatRupiah(item.harga)}</td>
+                    <td>${item.jumlah}</td>
+                    <td>${formatRupiah(total)}</td>
+                </tr>
+            `;
+        });
+        let diskon = totalBelanja * 0.05;
+        let totalBayar = totalBelanja - diskon;
+        document.getElementById("total-belanja").innerText = formatRupiah(totalBelanja);
+        document.getElementById("diskon").innerText = `${formatRupiah(diskon)} (5%)`;
+        document.getElementById("total-bayar").innerText = formatRupiah(totalBayar);
     }
-    $diskon_amount = ($diskon_percent / 100) * $grandtotal;
-    $total_bayar = $grandtotal - $diskon_amount;
 
-    // Tabel faktur / struk
-    echo "<div style='width:65%; background:white; border:3px solid #4682B4; border-radius:10px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.1); margin-bottom:40px;'>";
-    echo "<table style='width:100%; border-collapse: collapse; margin-top:20px;'>";
-    echo "<tr style='background:#87CEEB; color:white;'>
-            <th style='text-align:center; padding:8px;'>No</th>
-            <th style='text-align:center; padding:8px;'>Kode Barang</th>
-            <th style='text-align:center; padding:8px;'>Nama Barang</th>
-            <th style='text-align:center; padding:8px;'>Jumlah</th>
-            <th style='text-align:center; padding:8px;'>Subtotal</th>
-          </tr>";
-
-    foreach ($beli as $index => $item) {
-        $no = $index + 1;
-        echo "<tr>
-                <td style='padding:8px; text-align:center;'>".$no."</td>
-                <td style='padding:8px; text-align:center;'>{$item[0]}</td>
-                <td style='padding:8px; text-align:center;'>". strtoupper($item[1]) ."</td>
-                <td style='padding:8px; text-align:center;'>{$jumlah[$index]} pcs</td>
-                <td style='padding:8px; text-align:center;'>Rp ". number_format($total[$index],0,',','.') ."</td>
-              </tr>";
+    function tambah() {
+        const kode = document.getElementById("kode").value;
+        const nama = document.getElementById("nama").value;
+        const harga = parseInt(document.getElementById("harga").value);
+        const jumlah = parseInt(document.getElementById("jumlah").value);
+        if (!kode || !nama || !harga || !jumlah) {
+            alert("Semua field harus diisi!");
+            return;
+        }
+        keranjang.push({ kode, nama, harga, jumlah });
+        render();
     }
 
-    echo "<tr style='background:#C6EFFE; font-weight:bold;'>
-            <td colspan='4' style='padding:8px; text-align:right;'>Total Belanja:</td>
-            <td style='padding:8px; text-align:center;'>Rp ". number_format($grandtotal,0,',','.') ."</td>
-          </tr>";
-    echo "<tr style='background:#C6EFFE; font-weight:bold;'>
-            <td colspan='4' style='padding:8px; text-align:right;'>DISKON (".$diskon_percent."%):</td>
-            <td style='padding:8px; text-align:center;'>Rp ". number_format($diskon_amount,0,',','.') ."</td>
-          </tr>";
-    echo "<tr style='background:#87CEEB; color:white; font-weight:bold;'>
-            <td colspan='4' style='padding:8px; text-align:right;'>TOTAL BAYAR:</td>
-            <td style='padding:8px; text-align:center;'>Rp ". number_format($total_bayar,0,',','.') ."</td>
-          </tr>";
-    echo "</table>";
-    echo "<p class='thankyou-text' style='text-align:center; margin-top:20px;'>Terima Kasih telah berbelanja di POLGAN MART!</p>";
-    echo "</div>";
-    ?>
-</div>
+    function clearInputs() {
+        document.getElementById('kode').value = '';
+        document.getElementById('nama').value = '';
+        document.getElementById('harga').value = '';
+        document.getElementById('jumlah').value = '';
+    }
+
+    function kosongkan() {
+        keranjang = [];
+        render();
+    }
+</script>
 
 </body>
 </html>
